@@ -1,14 +1,22 @@
 ﻿using FontStashSharp.Interfaces;
+using FontStashSharp.TrueType;
+
 using System;
+using System.Collections.Generic;
+
 using static StbTrueTypeSharp.StbTrueType;
 
 namespace FontStashSharp
 {
-	internal unsafe class StbTrueTypeSharpSource : IFontSource
+	internal unsafe partial class StbTrueTypeSharpSource : IFontSource
 	{
-		private int _ascent, _descent, _lineHeight;
-		private readonly Int32Map<int> _kernings = new Int32Map<int>();
+		private readonly int _ascent;
+		private readonly int _descent;
+		private readonly int _lineHeight;
+		private readonly Int32Map<int> _kernings = new();
 		private readonly StbTrueTypeSharpSettings _settings;
+		private readonly List<uint> _supportedCodePoints;
+		private readonly TrueTypeNameTable _nameTable;
 
 		public stbtt_fontinfo _font;
 
@@ -31,12 +39,34 @@ namespace FontStashSharp
 			_ascent = ascent;
 			_descent = descent;
 			_lineHeight = ascent - descent + lineGap;
+
+			var glyphs = 0;
+			var supportedCodePoints = new uint[_font.numGlyphs];
+
+			for (int codePoint = 0; codePoint < 0x3ffff && glyphs < _font.numGlyphs; codePoint++)
+			{
+				var glyphIndex = stbtt_FindGlyphIndex(_font, codePoint);
+				if (supportedCodePoints[glyphIndex] == default)
+				{
+					supportedCodePoints[glyphIndex] = (uint)codePoint;
+					glyphs++;
+				}
+			}
+
+			_supportedCodePoints = new(supportedCodePoints);
+
+			_nameTable = GetNameTable(_font);
+			Metadata = new TrueTypeFontMetadata(ref _nameTable);
 		}
 
 		~StbTrueTypeSharpSource()
 		{
 			Dispose(false);
 		}
+
+		public IReadOnlyList<uint> SupportedCodePoints => _supportedCodePoints.AsReadOnly();
+
+		public IFontMetadata Metadata { get; }
 
 		protected virtual void Dispose(bool disposing)
 		{

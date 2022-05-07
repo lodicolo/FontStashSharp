@@ -10,4 +10,7 @@
     <StbImageSharpVersion>2.22.6</StbImageSharpVersion>
     <CyotekDrawingBitmapFontVersion>2.0.1</CyotekDrawingBitmapFontVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>latestMajor</LangVersion>
+  </PropertyGroup>
 </Project>

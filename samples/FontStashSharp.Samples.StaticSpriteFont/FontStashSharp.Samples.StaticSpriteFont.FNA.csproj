@@ -3,17 +3,17 @@
     <OutputType>WinExe</OutputType>
     <ApplicationIcon />
     <StartupObject />
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <OutputPath>bin\FNA\$(Configuration)</OutputPath>
     <DefineConstants>$(DefineConstants);FNA</DefineConstants>
     <RootNamespace>FontStashSharp.Samples.StaticSpriteFont</RootNamespace>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <EmbeddedResource Include="Fonts\*.*" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\XNA\FontStashSharp.FNA.csproj" />
-  </ItemGroup> 
+  </ItemGroup>
 </Project>

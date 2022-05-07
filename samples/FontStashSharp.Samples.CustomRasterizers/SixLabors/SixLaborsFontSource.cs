@@ -2,6 +2,9 @@
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+
+using System;
+using System.Collections.Generic;
 using System.IO;
 using TrippyGL.Fonts.Building;
 
@@ -26,6 +29,10 @@ namespace FontStashSharp.Samples.SixLabors
 			DescentBase = fontInstance.Descender / (float)fh;
 			LineHeightBase = fontInstance.LineHeight / (float)fh;
 		}
+
+		public IReadOnlyList<uint> SupportedCodePoints => throw new NotImplementedException();
+
+		public IFontMetadata Metadata => throw new NotImplementedException();
 
 		public void Dispose()
 		{

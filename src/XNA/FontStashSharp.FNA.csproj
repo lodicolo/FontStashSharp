@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <PackageId>FontStashSharp.FNA</PackageId>
     <AssemblyName>FontStashSharp.FNA</AssemblyName>
     <Description>FontStashSharp for FNA</Description>
@@ -12,7 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\FNA\FNA.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Cyotek.Drawing.BitmapFont" Version="$(CyotekDrawingBitmapFontVersion)" />
     <PackageReference Include="StbImageSharp" Version="$(StbImageSharpVersion)" />

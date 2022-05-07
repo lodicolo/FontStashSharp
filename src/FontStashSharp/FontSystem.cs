@@ -2,6 +2,8 @@ using FontStashSharp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using FontStashSharp.SharpFont;
+using System.Linq;
 
 #if MONOGAME || FNA
 using Microsoft.Xna.Framework.Graphics;
@@ -22,6 +24,7 @@ namespace FontStashSharp
 		private readonly List<IFontSource> _fontSources = new List<IFontSource>();
 		private readonly Int32Map<DynamicSpriteFont> _fonts = new Int32Map<DynamicSpriteFont>();
 		private readonly FontSystemSettings _settings;
+		private readonly List<uint> _supportedCodePoints;
 
 		private FontAtlas _currentAtlas;
 
@@ -40,6 +43,8 @@ namespace FontStashSharp
 
 		public Texture2D ExistingTexture => _settings.ExistingTexture;
 		public Rectangle ExistingTextureUsedSpace => _settings.ExistingTextureUsedSpace;
+
+		public IReadOnlyList<uint> SupportedCodePoints => _supportedCodePoints.AsReadOnly();
 
 		public bool UseKernings = true;
 		public int? DefaultCharacter = ' ';
@@ -65,13 +70,15 @@ namespace FontStashSharp
 			}
 
 			_settings = settings.Clone();
+			_supportedCodePoints = new();
 
 			if (_settings.FontLoader == null)
 			{
+				//_fontLoader = new FreeTypeLoader();
 				var loaderSettings = new StbTrueTypeSharpSettings
 				{
-					KernelWidth = _settings.KernelWidth,
-					KernelHeight = _settings.KernelHeight
+				  KernelWidth = _settings.KernelWidth,
+				  KernelHeight = _settings.KernelHeight
 				};
 				_fontLoader = new StbTrueTypeSharpLoader(loaderSettings);
 			}
@@ -102,6 +109,7 @@ namespace FontStashSharp
 		public void AddFont(byte[] data)
 		{
 			var fontSource = _fontLoader.Load(data);
+			_supportedCodePoints.AddRange(fontSource.SupportedCodePoints.Where(codePoint => !_supportedCodePoints.Contains(codePoint)));
 			_fontSources.Add(fontSource);
 		}
 

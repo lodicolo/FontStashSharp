@@ -1,6 +1,7 @@
 ﻿using FontStashSharp.Interfaces;
 using SharpFontInternal;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace FontStashSharp
@@ -11,6 +12,7 @@ namespace FontStashSharp
 		private GCHandle _memoryHandle;
 		private IntPtr _faceHandle;
 		private readonly FaceRec _rec;
+		private readonly List<uint> _supportedCodePoints;
 
 		public FreeTypeSource(byte[] data)
 		{
@@ -36,12 +38,27 @@ namespace FontStashSharp
 
 			_faceHandle = faceRef;
 			_rec = PInvokeHelper.PtrToStructure<FaceRec>(_faceHandle);
+
+			var charMapEntries = new uint[_rec.num_glyphs.ToInt64()];
+			uint charcode = FTNative.FT_Get_First_Char(_faceHandle, out var gindex);
+
+			while (gindex != 0)
+			{
+				charMapEntries[gindex] = charcode;
+				charcode = FTNative.FT_Get_Next_Char(_faceHandle, charcode, out gindex);
+			}
+
+			_supportedCodePoints = new(charMapEntries);
 		}
 
 		~FreeTypeSource()
 		{
 			Dispose(false);
 		}
+
+		public IReadOnlyList<uint> SupportedCodePoints => _supportedCodePoints.AsReadOnly();
+
+		public IFontMetadata Metadata => throw new NotImplementedException();
 
 		protected virtual void Dispose(bool disposing)
 		{

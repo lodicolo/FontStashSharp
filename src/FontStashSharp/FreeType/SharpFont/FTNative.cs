@@ -25,6 +25,12 @@ namespace SharpFontInternal
 		public static extern uint FT_Get_Char_Index(IntPtr face, uint charcode);
 
 		[DllImport(FreetypeDll, CallingConvention = CallConvention)]
+		public static extern uint FT_Get_First_Char(IntPtr face, out uint agindex);
+
+		[DllImport(FreetypeDll, CallingConvention = CallConvention)]
+		public static extern uint FT_Get_Next_Char(IntPtr face, uint charcode, out uint agindex);
+
+		[DllImport(FreetypeDll, CallingConvention = CallConvention)]
 		public static extern Error FT_Set_Pixel_Sizes(IntPtr face, uint pixel_width, uint pixel_height);
 
 		[DllImport(FreetypeDll, CallingConvention = CallConvention)]
