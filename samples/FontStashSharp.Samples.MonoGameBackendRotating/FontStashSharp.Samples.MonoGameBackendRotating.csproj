@@ -11,12 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.7.1.189" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\FontStashSharp\FontStashSharp.csproj" />
-  </ItemGroup>  
+  </ItemGroup>
 
   <ItemGroup>
     <None Update="Fonts\DroidSans.ttf">
@@ -28,5 +24,5 @@
     <None Update="Fonts\Symbola-Emoji.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>  
+  </ItemGroup>
 </Project>

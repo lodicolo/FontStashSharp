@@ -1,6 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <PackageId>FontStashSharp.MonoGame</PackageId>
     <AssemblyName>FontStashSharp.MonoGame</AssemblyName>
     <Description>FontStashSharp for MonoGame</Description>
@@ -8,20 +8,23 @@
     <OutputPath>bin\MonoGame\$(Configuration)</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.Portable" PrivateAssets="All" Version="3.6.0.1625" />
-    <PackageReference Include="Cyotek.Drawing.BitmapFont" Version="$(CyotekDrawingBitmapFontVersion)" />
-    <PackageReference Include="StbImageSharp" Version="$(StbImageSharpVersion)" />
-    <PackageReference Include="StbTrueTypeSharp" Version="$(StbTrueTypeSharpVersion)" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Compile Include="..\FontStashSharp\**\*.cs" LinkBase="FontStashSharp" />
-    <Compile Remove="..\FontStashSharp\obj\**\*.cs" LinkBase="FontStashSharp" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Cyotek.Drawing.BitmapFont" Version="$(CyotekDrawingBitmapFontVersion)" />
+		<PackageReference Include="StbImageSharp" Version="$(StbImageSharpVersion)" />
+		<PackageReference Include="StbTrueTypeSharp" Version="$(StbTrueTypeSharpVersion)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\FontStashSharp\**\*.cs" LinkBase="FontStashSharp" />
+		<Compile Remove="..\FontStashSharp\obj\**\*.cs" LinkBase="FontStashSharp" />
+	</ItemGroup>
 </Project>
